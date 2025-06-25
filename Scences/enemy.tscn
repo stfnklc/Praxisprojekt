@@ -1,0 +1,25 @@
+[gd_scene load_steps=6 format=3 uid="uid://dtscqlj14desk"]
+
+[ext_resource type="Script" uid="uid://cr122d45u7ntf" path="res://enemy.gd" id="1_6yvqy"]
+[ext_resource type="SpriteFrames" uid="uid://chsjmsdiav7l4" path="res://Textures/enemy_spriteframes.tres" id="2_lw4pj"]
+[ext_resource type="PackedScene" uid="uid://bkue7iaawo4xq" path="res://Scences/hitbox.tscn" id="3_3nx23"]
+[ext_resource type="PackedScene" uid="uid://b1gyd8g4ivp46" path="res://Scences/hurt_box.tscn" id="4_ik3e6"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_4gyqm"]
+radius = 7.0
+
+[node name="Enemy" type="CharacterBody2D" groups=["Enemies"]]
+collision_layer = 2
+script = ExtResource("1_6yvqy")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = ExtResource("2_lw4pj")
+animation = &"moving"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 2)
+shape = SubResource("CircleShape2D_4gyqm")
+
+[node name="Hitbox" parent="." instance=ExtResource("3_3nx23")]
+
+[node name="Hurtbox" parent="." instance=ExtResource("4_ik3e6")]

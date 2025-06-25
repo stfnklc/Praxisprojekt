@@ -1,0 +1,40 @@
+[gd_scene load_steps=6 format=3 uid="uid://ce4epddoggbwe"]
+
+[ext_resource type="Script" uid="uid://ca0mhct366tbq" path="res://player.gd" id="1_fdd1h"]
+[ext_resource type="SpriteFrames" uid="uid://cc2mbuyf84xdr" path="res://Textures/player_sprites.tres" id="2_njme2"]
+[ext_resource type="PackedScene" uid="uid://bkue7iaawo4xq" path="res://Scences/hitbox.tscn" id="3_5xvqy"]
+[ext_resource type="PackedScene" uid="uid://b1gyd8g4ivp46" path="res://Scences/hurt_box.tscn" id="4_yfn50"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_5xvqy"]
+radius = 6.0
+height = 20.0
+
+[node name="Player" type="CharacterBody2D" groups=["Player"]]
+collision_mask = 7
+script = ExtResource("1_fdd1h")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(0, -8)
+sprite_frames = ExtResource("2_njme2")
+animation = &"death"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CapsuleShape2D_5xvqy")
+
+[node name="Hitbox" parent="." instance=ExtResource("3_5xvqy")]
+
+[node name="Hurtbox" parent="." groups=["Hitbox"] instance=ExtResource("4_yfn50")]
+
+[node name="DeathPanel" type="Panel" parent="."]
+visible = false
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Label" type="Label" parent="DeathPanel"]
+texture_filter = 1
+layout_mode = 0
+offset_right = 97.0
+offset_bottom = 23.0
+text = "GAME OVER!"
+
+[connection signal="area_entered" from="Hurtbox" to="." method="_on_hurtbox_area_entered"]
