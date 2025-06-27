@@ -9,8 +9,9 @@
 radius = 6.0
 height = 20.0
 
-[node name="Player" type="CharacterBody2D" groups=["Player"]]
-collision_mask = 7
+[node name="Player" type="CharacterBody2D" groups=["Hitbox", "Hurtbox", "Player"]]
+collision_layer = 0
+collision_mask = 0
 script = ExtResource("1_fdd1h")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
@@ -22,8 +23,10 @@ animation = &"death"
 shape = SubResource("CapsuleShape2D_5xvqy")
 
 [node name="Hitbox" parent="." instance=ExtResource("3_5xvqy")]
+collision_mask = 2
 
-[node name="Hurtbox" parent="." groups=["Hitbox"] instance=ExtResource("4_yfn50")]
+[node name="Hurtbox" parent="." instance=ExtResource("4_yfn50")]
+collision_mask = 8
 
 [node name="DeathPanel" type="Panel" parent="."]
 visible = false

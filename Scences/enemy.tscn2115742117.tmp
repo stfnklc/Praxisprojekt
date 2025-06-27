@@ -8,10 +8,12 @@
 [sub_resource type="CircleShape2D" id="CircleShape2D_4gyqm"]
 radius = 7.0
 
-[node name="Enemy" type="CharacterBody2D" groups=["Enemies", "Hitbox", "Hurtbox"]]
-collision_layer = 0
-collision_mask = 0
+[node name="Enemy" type="CharacterBody2D" groups=["Enemies"]]
+collision_layer = 2
 script = ExtResource("1_6yvqy")
+speed = null
+hp = null
+damage = null
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = ExtResource("2_lw4pj")
@@ -22,7 +24,5 @@ position = Vector2(0, 2)
 shape = SubResource("CircleShape2D_4gyqm")
 
 [node name="Hitbox" parent="." instance=ExtResource("3_3nx23")]
-collision_layer = 8
 
 [node name="Hurtbox" parent="." instance=ExtResource("4_ik3e6")]
-collision_layer = 2

@@ -10,3 +10,5 @@ script = ExtResource("1_hjrb8")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." groups=["Hitbox"]]
 shape = SubResource("CapsuleShape2D_hjrb8")
+
+[node name="DisableHitBoxTimer" type="Timer" parent="."]

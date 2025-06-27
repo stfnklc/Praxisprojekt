@@ -10,3 +10,5 @@ script = ExtResource("1_dpn37")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CapsuleShape2D_trl6m")
+
+[node name="DisableTimer" type="Timer" parent="."]

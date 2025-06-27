@@ -2,17 +2,19 @@ extends CharacterBody2D
 
 @onready var sprite = $AnimatedSprite2D
 @onready var hitbox = $Hitbox
-@onready var hurtbox = $Hurtbox  # Reference the Hurtbox node
-@onready var deathPanel = $DeathPanel
+@onready var hurtbox = $Hurtbox
+@onready var death_panel = $DeathPanel
 
 var speed = 100
-var hp = 20
+var hp = 50
 var last_direction = "down"
 
 func _ready():
-	hitbox.monitoring = false  # Disable Hitbox by default
-	# Connect the Hurtbox signal if not already connected in the scene
-	#hurtbox.area_entered.connect(_on_hurtbox_area_entered)
+	hitbox.monitoring = false
+	hurtbox.HurtBoxType = 0  
+	print("Player initialized, Hitbox monitoring: ", hitbox.monitoring)
+	await get_tree().physics_frame  
+	hurtbox.area_entered.connect(_on_hurtbox_area_entered) 
 
 func _physics_process(_delta):
 	movement()
@@ -79,36 +81,30 @@ func _input(event):
 		elif last_direction == "left":
 			sprite.play("attack_side")
 			sprite.flip_h = true
-		await get_tree().create_timer(0.2).timeout
-		print("hit" + last_direction)  # Attack duration
-		hitbox.monitoring = false
-
-func _on_hurtbox_area_entered(area):
-	print("Hurtbox detected area: ", area.name)  # Debug all area entries
-	if area.is_in_group("Hitbox"):
-		print("Player taking damage from: ", area.name, " with damage: ", area.damage)
-		take_damage(area.damage)
+		hitbox.activate(0.5) 
+		print("Player attack initiated, Hitbox activated")
 
 func take_damage(damage):
 	hp -= damage
-	print("Player HP: ", hp)  # Debug output to track health
+	print("Player HP: ", hp)
 	if hp <= 0:
+		print("Player dying...")
 		die()
 
 func die():
-	# Play death animation
 	sprite.play("death")
-	# Disable movement and attacks
 	set_physics_process(false)
 	hitbox.monitoring = false
-	# Pause the game
 	get_tree().paused = true
-	# Show death panel with a fade-in effect
-	deathPanel.visible = true
+	death_panel.visible = true
 	var tween = create_tween()
-	tween.tween_property(deathPanel, "modulate:a", 1.0, 1.0).from(0.0)  # Fade in
-	# Wait for animation to finish
+	tween.tween_property(death_panel, "modulate:a", 1.0, 1.0).from(0.0)
 	await sprite.animation_finished
-	# Wait 2 seconds before cleanup
 	await get_tree().create_timer(2.0).timeout
 	queue_free()
+
+func _on_hurtbox_area_entered(area):
+	if area.is_in_group("Hitbox"):
+		print("Player Hurtbox detected Hitbox: ", area.name)
+		if area.owner != self:  
+			take_damage(area.damage)
